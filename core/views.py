@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.views import generic
 from django.views import View
 from . forms import BlogForms
 from django.db.models import Q
@@ -43,13 +44,13 @@ class CreatePostView(View):
             form.save()
         return redirect("/")
 
-def search(request):
-    if request.method == "GET":
-        query = request.GET.get('query')
-        if query:
-            results = Blog.objects.filter(title_icontains=query)
-            context={"results": results}
-            return render(request, "blog/search.html", context)
-        else:
-            print("No information found")
-            return request(request, "blog/search.html", {})
+class SearchResultsView(generic.ListView):
+    model = Blog
+    template_name = 'blog/search.html'
+    
+    def get_queryset(self): 
+        query = self.request.GET.get('query')
+        object_list = Blog.objects.filter(
+            Q(title__icontains=query) | Q(category__icontains=query)
+        )
+        return object_list
