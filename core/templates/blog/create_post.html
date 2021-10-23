@@ -1,0 +1,40 @@
+{% extends 'blog/base.html' %}
+{% load widget_tweaks %}
+    {% block body %}
+        <div class="container-fluid">
+            <main class="tm-main">
+                <div class="row tm-row">
+                    <div class="col-12">
+                        <div>
+                            <h2 class="tm-color-primary tm-post-title">Create blog</h2>
+                            <form action="" class="mb-5 tm-comment-form" method="POST"  enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {% for hidden in form.hidden_fields %}
+                                 {{ hidden }}
+                                {% endfor %}
+
+                                {% for field in form.visible_fields %}
+                                    <div class="form-group">
+                                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                            {{ field|add_class:'form-control' }}
+                                        {% for error in field.errors %}
+                                        <span class="help-block">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% endfor %}
+                                <button class="tm-btn tm-btn-primary tm-btn-small">Submit</button>                                                     
+                            </form>                          
+                        </div>
+                    </div>
+                </div>
+                <footer class="row tm-row">
+                    <div class="col-md-6 col-12 tm-color-gray">
+                        Design: <a rel="nofollow" target="_parent" href="https://templatemo.com" class="tm-external-link">TemplateMo</a>
+                    </div>
+                    <div class="col-md-6 col-12 tm-color-gray tm-copyright">
+                        Copyright 2020 Xtra Blog Company Co. Ltd.
+                    </div>
+                </footer>
+            </main>
+        </div>
+    {% endblock %}
