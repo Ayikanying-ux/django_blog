@@ -1,3 +1,4 @@
+from django.http import request
 from django.shortcuts import render, redirect
 from django.views import generic
 from django.views import View
@@ -44,13 +45,11 @@ class CreatePostView(View):
             form.save()
         return redirect("/")
 
-class SearchResultsView(generic.ListView):
-    model = Blog
-    template_name = 'blog/search.html'
-    
-    def get_queryset(self): 
+class SearchResultsView(View):
+    def get(self, request, *args, **kwags): 
         query = self.request.GET.get('query')
         object_list = Blog.objects.filter(
             Q(title__icontains=query) | Q(category__icontains=query)
         )
-        return object_list
+        context={"object_list": object_list}
+        return render(request, 'blog/search.html', context)
