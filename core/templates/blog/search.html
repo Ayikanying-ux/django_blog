@@ -1,5 +1,5 @@
 {% extends 'blog/base.html' %}
-{% block blody %}
+{% block body %}
     <div class="container-fluid">
             <main class="tm-main">
                 <!-- Search form -->
@@ -11,7 +11,7 @@
                     <article class="col-12 col-md-6 tm-post">
                         {% for c in object_list %}
                             <hr class="tm-hr-primary">
-                            <a href="{% url 'post_detail' article.pk %}" class="effect-lily tm-post-link tm-pt-60">
+                            <a href="" class="effect-lily tm-post-link tm-pt-60">
                                 <div class="tm-post-link-inner">
                                     <img src="{{ c.image.url }}" alt="Image" class="img-fluid">                            
                                 </div>

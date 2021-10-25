@@ -15,8 +15,8 @@
                     </div>                
                 </div>            
                 <div class="row tm-row">
-                    <article class="col-12 col-md-6 tm-post">
-                        {% for article in blog %}
+                    {% for article in blog %}
+                        <article class="col-lg-6 col-md-6 tm-post col-md-auto m-auto">
                             <hr class="tm-hr-primary">
                             <a href="{% url 'post_detail' article.pk %}" class="effect-lily tm-post-link tm-pt-60">
                                 <div class="tm-post-link-inner">
@@ -37,8 +37,8 @@
                                 <span>36 comments</span>
                                 <span>by Admin Nat</span>
                             </div>
-                        {% endfor %}
-                    </article>
+                        </article>
+                    {% endfor %}
                 </div>
                 <div class="row tm-row tm-mt-100 tm-mb-75">
                     <div class="tm-prev-next-wrapper">

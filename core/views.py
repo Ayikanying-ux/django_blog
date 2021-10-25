@@ -2,10 +2,10 @@ from django.http import request
 from django.shortcuts import render, redirect
 from django.views import generic
 from django.views import View
-from . forms import BlogForms
+from . forms import BlogForms, CommentForm
 from django.db.models import Q
 
-from core.models import Blog
+from core.models import Blog, Comment
 # Create your views here.
 class HomeListView(View):
     def get(self, request, *args, **kwargs):
@@ -19,9 +19,17 @@ class AboutView(View):
 
 class PostDetailView(View):
     def get(self, request, pk, *args, **kwargs):
+        form = CommentForm
         blog = Blog.objects.get(pk=pk)
-        context={"blog": blog}
+        comment=blog.comment_set.all()
+        context={"blog": blog, "form": form, "comment": comment}
         return render(request, "blog/post_detail.html", context)
+
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("/")
     
 
 class ContactView(View):
@@ -29,21 +37,18 @@ class ContactView(View):
         return render(request, "blog/contact.html")
 
 class CreatePostView(View):
-    template_name="blog/create_post.html"
-    form_class=BlogForms
-
     def get(self, request, *args, **kwargs):
-        form = self.form_class
+        form = BlogForms
         context={
             "form": form
         }
         return render(request, "blog/create_post.html", context)
-
+    
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
+        form = BlogForms(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-        return redirect("/")
+            return redirect("/")
 
 class SearchResultsView(View):
     def get(self, request, *args, **kwags): 
